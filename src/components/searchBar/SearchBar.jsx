@@ -8,16 +8,18 @@ function SearchBar(props) {
     return (
         <AppBar position="static">
             <Toolbar>
-                <div className="search-container">
-                    <InputBase
-                        placeholder={props.placeholder}
-                        value={props.value}
-                        onChange={props.onChange}
-                    />
-                    <div className="search-icon">
-                        <SearchIcon />
+                <form onSubmit={props.onSubmit}>
+                    <div className="search-container">
+                        <InputBase
+                            placeholder={props.placeholder}
+                            value={props.value}
+                            onChange={props.onChange}
+                        />
+                        <div className="search-icon">
+                            <SearchIcon onClick={props.onSubmit}/>
+                        </div>
                     </div>
-                </div>
+                </form>
             </Toolbar>
         </AppBar>
     );
