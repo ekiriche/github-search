@@ -1,17 +1,17 @@
 import React from "react";
 import {Pagination as MaterialPagination} from '@material-ui/lab';
 
-function Pagination(props) {
+const Pagination = (props) => {
     return (
         <MaterialPagination
             page={props.activePage}
-            onChange={props.onChange}
+            onChange={(event, value) => props.onChange(value)}
             count={Math.ceil(props.totalItems / props.itemsPerPage)}
             shape="rounded"
             color="primary"
         />
     );
-}
+};
 
 Pagination.defaultProps = {
     itemsPerPage: 30

@@ -1,30 +1,58 @@
 import React, {useState} from 'react';
-import './App.css';
+import './App.sass';
 import SearchBar from "../searchBar/SearchBar";
 import {getReposRequest} from "../utils";
 import axios from "axios";
+import RepositoryCard from "../repositoryCard/RepositoryCard";
+import Pagination from "../pagination/Pagination";
+import moment from "moment";
+import "./App.sass";
 
-function App() {
+const App = () => {
     const [searchValue, setSearchValue] = useState("");
     const [searchResult, setSearchResult] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
     const source = axios.CancelToken.source();
 
-    const searchRepos = () => {
-        getReposRequest(searchValue, source.token).then((response) => {
-            setSearchResult(response);
+    const searchRepos = (page) => {
+        setSearchResult(null);
+        getReposRequest(searchValue, source.token, page, 30).then((response) => {
+            console.log(response);
+            setSearchResult(response.data);
         }).catch((error) => {
             if (axios.isCancel(error)) {
                 console.log("was cancelled");
             }
-            setSearchResult(null);
         });
+    };
+
+    const onPageChange = (page) => {
+        searchRepos(page);
+        setCurrentPage(page);
     };
 
     return (
       <div>
-        <SearchBar value={searchValue} onChange={(e) => setSearchValue(e.target.value)} onSubmit={() => searchRepos()}/>
+          <SearchBar value={searchValue} onChange={(e) => setSearchValue(e.target.value)} onSubmit={() => onPageChange(1)}/>
+          <div className="repository-list">
+              {searchResult && searchResult.items.map((item, index) => (
+                  <RepositoryCard
+                      key={index}
+                      name={item.full_name}
+                      nameLink={item.html_url}
+                      description={item.description}
+                      stars={item.stargazers_count}
+                      language={item.language}
+                      license={item.license && item.license.name}
+                      updatedAt={moment(item.updated_at).fromNow()}
+                  />
+              ))}
+          </div>
+          {searchResult &&
+              <Pagination activePage={currentPage} onChange={onPageChange} totalItems={Math.min(searchResult.total_count, 1000)} />
+          }
       </div>
     );
-}
+};
 
 export default App;
