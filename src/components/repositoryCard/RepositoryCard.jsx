@@ -1,26 +1,35 @@
 import React, {useState} from 'react';
 import StarIcon from '@material-ui/icons/Star';
+import * as githubColors from '../utils/githubLanguageColors';
+import './RepositoryCard.sass';
 
 const RepositoryCard = (props) => {
     return (
         <div className="card-container">
-            <div className="card-name-wrapper">
-                <a className="card-name" href={props.nameLink}>{props.name}</a>
-            </div>
+            <a className="card-name" href={props.nameLink}>{props.name}</a>
             {props.description &&
                 <p className="card-description">
                     {props.description.length > 117 ? `${props.description.slice(0, 118)}...` : props.description}
                 </p>
             }
             <div className="bottom-wrapper">
-                <div className="stars-container">
-                    <StarIcon />
+                <a className="stars-container" href={`${props.nameLink}/stargazers`}>
+                    <StarIcon/>
                     {props.stars}
-                </div>
-                <div className="language">
-                    {props.language}
-                </div>
-                {props.license &&
+                </a>
+                {props.language &&
+                    <div className="language-container">
+                        <span
+                            className="language-color"
+                            style={{
+                                backgroundColor: githubColors.default[props.language] ?
+                                    githubColors.default[props.language].color : null
+                            }}
+                        />
+                        {props.language}
+                    </div>
+                }
+                {props.license && props.license !== "Other" &&
                     <div className="license">
                         {props.license}
                     </div>
