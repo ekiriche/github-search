@@ -15,15 +15,17 @@ const App = () => {
     const source = axios.CancelToken.source();
 
     const searchRepos = (page) => {
-        setSearchResult(null);
-        getReposRequest(searchValue, source.token, page, 30).then((response) => {
-            console.log(response);
-            setSearchResult(response.data);
-        }).catch((error) => {
-            if (axios.isCancel(error)) {
-                console.log("was cancelled");
-            }
-        });
+        if (window.sessionStorage.getItem(`${searchValue}-${page}`)) {
+            setSearchResult(JSON.parse(window.sessionStorage.getItem(`${searchValue}-${page}`)));
+        } else {
+            setSearchResult(null);
+            getReposRequest(searchValue, source.token, page, 30).then((response) => {
+                setSearchResult(response.data);
+                window.sessionStorage.setItem(`${searchValue}-${page}`, JSON.stringify(response.data));
+            }).catch((error) => {
+
+            });
+        }
     };
 
     const onPageChange = (page) => {
