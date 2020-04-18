@@ -15,6 +15,7 @@ const App = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
      const searchRepos = (page) => {
+         setSearchResult(null);
          if (window.sessionStorage.getItem(`${searchValue}-${page}`)) {
              setSearchResult(JSON.parse(window.sessionStorage.getItem(`${searchValue}-${page}`)));
          } else {

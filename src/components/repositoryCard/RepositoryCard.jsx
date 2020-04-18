@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import StarIcon from '@material-ui/icons/Star';
 import * as githubColors from '../utils/githubLanguageColors';
 import './RepositoryCard.sass';
