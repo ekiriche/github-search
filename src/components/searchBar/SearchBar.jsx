@@ -78,10 +78,10 @@ const SearchBar = (props) => {
             <Toolbar>
                 <form onSubmit={(e) => onSubmit(e)}>
                     <div className={classes.container}>
-                        <GitHubIcon className={classes.githubIcon} />
+                        <GitHubIcon className={classes.githubIcon} onClick={props.onIconClick}/>
                         <div className={classes.searchContainer}>
                             <div className={classes.searchIcon}>
-                                <SearchIcon onClick={props.onSubmit} />
+                                <SearchIcon />
                             </div>
                             <InputBase
                                 placeholder={props.placeholder}
